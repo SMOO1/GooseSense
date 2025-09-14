@@ -35,10 +35,20 @@ A web application that uses Teachable Machine models to classify goose emotions 
 
 3. Install dependencies:
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
 
-4. Start the development server:
+4. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   Then edit `.env` and add your Google Gemini API key:
+   ```
+   REACT_APP_GEMINI_API_KEY=your_actual_api_key_here
+   ```
+   Get your API key from: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
+
+5. Start the development server:
    ```bash
    npm start
    ```

@@ -2,7 +2,11 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 class GeminiChatService {
   constructor() {
-    this.apiKey = 'AIzaSyBzFR8JTtu3rwBzNWMS3Gvw8NF1wCNRbXo';
+    this.apiKey = process.env.REACT_APP_GEMINI_API_KEY;
+    if (!this.apiKey) {
+      console.error('REACT_APP_GEMINI_API_KEY environment variable is not set');
+      throw new Error('Gemini API key is required. Please set REACT_APP_GEMINI_API_KEY in your environment.');
+    }
     this.genAI = new GoogleGenerativeAI(this.apiKey);
     this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     this.chatHistory = [];
