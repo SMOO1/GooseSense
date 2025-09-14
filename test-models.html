@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachable Machine Models Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .model-info { background: #f0f0f0; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #e8f5e8; color: #2e7d32; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦆 Teachable Machine Models Test</h1>
+        
+        <div id="status">Loading models...</div>
+        
+        <div class="model-info">
+            <h3>Model URLs:</h3>
+            <p><strong>Emotion Model:</strong> <a href="https://teachablemachine.withgoogle.com/models/cXtszqwo0/" target="_blank">https://teachablemachine.withgoogle.com/models/cXtszqwo0/</a></p>
+            <p><strong>Characteristics Model:</strong> <a href="https://teachablemachine.withgoogle.com/models/-P2mBKM75/" target="_blank">https://teachablemachine.withgoogle.com/models/-P2mBKM75/</a></p>
+        </div>
+        
+        <div id="emotion-info"></div>
+        <div id="characteristics-info"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script>
+        async function testModels() {
+            const statusDiv = document.getElementById('status');
+            const emotionDiv = document.getElementById('emotion-info');
+            const characteristicsDiv = document.getElementById('characteristics-info');
+            
+            try {
+                statusDiv.innerHTML = 'Loading emotion model...';
+                
+                // Test emotion model
+                const emotionModelURL = 'https://teachablemachine.withgoogle.com/models/cXtszqwo0/model.json';
+                const emotionMetadataURL = 'https://teachablemachine.withgoogle.com/models/cXtszqwo0/metadata.json';
+                
+                const emotionModel = await tmImage.load(emotionModelURL, emotionMetadataURL);
+                const emotionClasses = emotionModel.getTotalClasses();
+                
+                emotionDiv.innerHTML = `
+                    <div class="success">
+                        <h3>✅ Emotion Model Loaded Successfully</h3>
+                        <p><strong>Classes:</strong> ${emotionClasses}</p>
+                        <p><strong>Model URL:</strong> ${emotionModelURL}</p>
+                    </div>
+                `;
+                
+                statusDiv.innerHTML = 'Loading characteristics model...';
+                
+                // Test characteristics model
+                const characteristicsModelURL = 'https://teachablemachine.withgoogle.com/models/-P2mBKM75/model.json';
+                const characteristicsMetadataURL = 'https://teachablemachine.withgoogle.com/models/-P2mBKM75/metadata.json';
+                
+                const characteristicsModel = await tmImage.load(characteristicsModelURL, characteristicsMetadataURL);
+                const characteristicsClasses = characteristicsModel.getTotalClasses();
+                
+                characteristicsDiv.innerHTML = `
+                    <div class="success">
+                        <h3>✅ Characteristics Model Loaded Successfully</h3>
+                        <p><strong>Classes:</strong> ${characteristicsClasses}</p>
+                        <p><strong>Model URL:</strong> ${characteristicsModelURL}</p>
+                    </div>
+                `;
+                
+                statusDiv.innerHTML = '<div class="success"><h3>🎉 Both models loaded successfully!</h3><p>You can now use the main application at <a href="http://localhost:3000">http://localhost:3000</a></p></div>';
+                
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="error"><h3>❌ Error loading models</h3><p>${error.message}</p></div>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        // Start testing when page loads
+        testModels();
+    </script>
+</body>
+</html>
